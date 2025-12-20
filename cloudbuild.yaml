@@ -1,0 +1,57 @@
+steps:
+  # 1. Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/streamsentry:${_IMAGE_TAG}', '.']
+
+  # 2. Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/streamsentry:${_IMAGE_TAG}']
+
+  # 3. Collect Static Files to GCS
+  - name: 'gcr.io/$PROJECT_ID/streamsentry:${_IMAGE_TAG}'
+    entrypoint: 'python'
+    args: ['manage.py', 'collectstatic', '--noinput']
+    env:
+      - 'GS_BUCKET_NAME=${_GS_BUCKET_NAME}'
+      - 'SECRET_KEY=${_SECRET_KEY}'
+      - 'DATABASE_URL=${_DATABASE_URL}'
+      - 'DEBUG=False'
+
+  # 4. Deploy container to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'streamsentry'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/streamsentry:${_IMAGE_TAG}'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--set-env-vars'
+      - 'DEBUG=False'
+      - '--set-env-vars'
+      - 'DATABASE_URL=${_DATABASE_URL}'
+      - '--set-env-vars'
+      - 'SECRET_KEY=${_SECRET_KEY}'
+      - '--set-env-vars'
+
+      - 'CSRF_TRUSTED_ORIGINS=${_CSRF_TRUSTED_ORIGINS}'
+      - '--set-env-vars'
+      - 'GS_BUCKET_NAME=${_GS_BUCKET_NAME}'
+
+images:
+  - 'gcr.io/$PROJECT_ID/streamsentry:${_IMAGE_TAG}'
+
+substitutions:
+  _GS_BUCKET_NAME: 'streamsentry-static'
+  _SECRET_KEY: 'dummy-secret-key-for-build'
+  _DATABASE_URL: 'sqlite:///db.sqlite3'
+  _CSRF_TRUSTED_ORIGINS: 'http://localhost'
+  _IMAGE_TAG: 'latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
