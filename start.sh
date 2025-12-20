@@ -9,8 +9,8 @@ python manage.py migrate
 
 # Start Celery in the background
 echo "Starting Celery Worker..."
-celery -A ad_safety_project worker --loglevel=info --concurrency 2 &
+celery -A stream_sentry worker --loglevel=info --concurrency 2 &
 
 # Start Gunicorn in the foreground
 echo "Starting Gunicorn Web Server..."
-gunicorn ad_safety_project.wsgi:application --bind 0.0.0.0:$PORT
+gunicorn stream_sentry.wsgi:application --bind 0.0.0.0:$PORT

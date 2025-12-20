@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ad_safety_project.urls'
+ROOT_URLCONF = 'stream_sentry.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ad_safety_project.wsgi.application'
+WSGI_APPLICATION = 'stream_sentry.wsgi.application'
 
 
 # Database

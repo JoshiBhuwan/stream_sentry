@@ -27,4 +27,4 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
 # Default command (can be overridden by Procfile)
-CMD ["gunicorn", "ad_safety_project.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "stream_sentry.wsgi:application", "--bind", "0.0.0.0:8000"]

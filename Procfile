@@ -1,2 +1,2 @@
-web: gunicorn ad_safety_project.wsgi:application --log-file -
-worker: celery -A ad_safety_project worker --loglevel=info
+web: gunicorn stream_sentry.wsgi:application --log-file -
+worker: celery -A stream_sentry worker --loglevel=info
