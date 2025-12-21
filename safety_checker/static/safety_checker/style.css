@@ -26,10 +26,24 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: 
-        radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 20%);
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5);
+    animation: gradient 10s ease infinite;
+    background-size: 400% 400%;
 }
+
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
 
 .container {
     width: 100%;
@@ -72,6 +86,7 @@ h1 {
 .input-group {
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap
 }
 
 input[type="text"] {
