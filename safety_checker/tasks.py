@@ -12,7 +12,6 @@ def analyze_channel_task(channel_name):
     """
     print(f"[{channel_name}] Starting asynchronous analysis...")
     
-    # Simulate API latency and inference time
     time.sleep(5) 
     
     channel, _ = YouTubeChannel.objects.get_or_create(
@@ -29,9 +28,7 @@ def analyze_channel_task(channel_name):
         description="Analyzed content.",
         channel=channel
     )
-
-    # Simulate GARM Model Inference
-    # In production, this would call an external specific model or API
+# For now I will keep it random, so that in future I can call the youtube api and perform the analysis
     is_safe = random.random() > 0.3 
     
     if is_safe:
